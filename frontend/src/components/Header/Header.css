@@ -1,0 +1,43 @@
+.navbarBrand,
+.navbarBrand:hover,
+.navbarBrand:active {
+  color: #fff;
+  font-weight: bold;
+  font-size: 28px;
+  text-decoration: none;
+}
+
+.navbarForm {
+  width: 400px;
+  height: 45px;
+}
+
+.navbarFormControl {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.navbarProfile {
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.navbarLink,
+.navbarDropdownTitle {
+  color: #eee;
+  text-decoration: none;
+  transition: 0.1s all;
+}
+
+.navbarLink:hover,
+.navbarDropdownTitle:hover {
+  color: #fff;
+}
+
+.navbarDropdownItem {
+  font-weight: bold;
+}
