@@ -2,6 +2,7 @@
   min-height: 93vh;
   display: flex;
   padding: 10px;
+  background-color: #ddd;
 }
 
 .page {

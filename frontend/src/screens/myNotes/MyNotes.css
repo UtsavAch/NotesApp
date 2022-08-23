@@ -1,0 +1,72 @@
+.mainscreenButton {
+  margin-left: 10px;
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+
+.accordionItem {
+  border: none;
+  margin: 20px;
+  border-radius: 12px;
+}
+
+.accordionHeader {
+  position: relative;
+  text-decoration: none;
+  border-radius: 12px;
+}
+
+.noteHeader {
+  background-color: #e5fff6;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+
+  padding: 30px;
+  align-items: center;
+}
+
+.noteButtonContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.noteButton {
+  text-decoration: none;
+  color: #fff;
+  background-color: #ff5349;
+  border-radius: 12px;
+  padding: 10px;
+  font-weight: bold;
+  transition: 0.2s all;
+}
+
+.noteEditButton {
+  background-color: #158cba;
+}
+
+.noteEditButton:hover {
+  color: #fff;
+  background-color: #1580b0;
+  transform: translateY(0.7px);
+}
+
+.noteDeleteButton:hover {
+  background-color: #e05040;
+  transform: translateY(0.7px);
+}
+
+.noteTitle {
+  color: #444;
+  text-decoration: none;
+  flex: 1;
+  cursor: pointer;
+  align-self: center;
+  font-size: 20px;
+  font-weight: bold;
+}
