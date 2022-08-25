@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import Loading from "../../components/Header/Loading";
@@ -8,6 +8,7 @@ import ErrorMessage from "../../components/Header/ErrorMessage";
 import "../../utils/FormScreen.css";
 
 const LoginScreen = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
@@ -32,6 +33,7 @@ const LoginScreen = () => {
       setEmail("");
       setPassword("");
       setLoading(false);
+      navigate("/mynotes");
     } catch (error) {
       setError(error.response.data.message);
       setLoading(false);
@@ -41,6 +43,8 @@ const LoginScreen = () => {
   return (
     <MainScreen title="LOGIN" type="form">
       <div className="formContainer">
+        {loading && <Loading />}
+        {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -81,8 +85,6 @@ const LoginScreen = () => {
           </div>
         </Form>
       </div>
-      {loading && <Loading />}
-      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
     </MainScreen>
   );
 };

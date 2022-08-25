@@ -1,5 +1,6 @@
 .formContainer {
   margin: 20px;
+  margin-bottom: 100px;
   background-color: #e5fff6;
   padding: 30px;
   border-radius: 12px;
@@ -11,6 +12,7 @@
 
 .formInput {
   font-weight: bold;
+  color: #888;
 }
 
 .formSubmitArea {
