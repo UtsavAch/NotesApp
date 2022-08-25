@@ -1,0 +1,25 @@
+.formContainer {
+  margin: 20px;
+  background-color: #e5fff6;
+  padding: 30px;
+  border-radius: 12px;
+  font-weight: bold;
+  color: #555;
+  width: 100%;
+  max-width: 800px;
+}
+
+.formInput {
+  font-weight: bold;
+}
+
+.formSubmitArea {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.formButton {
+  text-transform: capitalize;
+}

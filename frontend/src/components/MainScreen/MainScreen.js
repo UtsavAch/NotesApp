@@ -7,12 +7,12 @@ const MainScreen = (props) => {
     <div className="mainback">
       <Container>
         <Row>
-          <div className="page">
+          <div className={`page ${props.type}`}>
             {props.title && (
-              <>
+              <div>
                 <h1 className="heading">{props.title}</h1>
                 <hr />
-              </>
+              </div>
             )}
             {props.children}
           </div>
