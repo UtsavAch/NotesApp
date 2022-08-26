@@ -18,8 +18,6 @@ const MyNotes = () => {
     setNotes(data);
   };
 
-  console.log(notes);
-
   useEffect(() => {
     fetchNotes();
   }, []);
