@@ -1,12 +1,15 @@
 import { Container, Form, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../actions/userActions";
 import "./Header.css";
 
 function Header() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const logoutHandler = () => {
-    localStorage.removeItem("userInfo");
+    dispatch(logout());
     navigate("/");
   };
 
