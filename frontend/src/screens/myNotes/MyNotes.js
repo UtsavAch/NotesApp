@@ -1,29 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Card, Badge, Accordion } from "react-bootstrap";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import MainScreen from "../../components/MainScreen/MainScreen";
+import { listNotes } from "../../actions/noteActions";
+import Loading from "../../components/Header/Loading";
 import "./MyNotes.css";
 
 const MyNotes = () => {
-  const [notes, setNotes] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const noteList = useSelector((state) => state.noteList);
+  const { loading, error, notes } = noteList;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
     }
   };
 
-  const fetchNotes = async () => {
-    const { data } = await axios.get("/api/notes/");
-    setNotes(data);
-  };
-
   useEffect(() => {
-    fetchNotes();
-  }, []);
+    dispatch(listNotes());
+    if (!userInfo) {
+      navigate("/");
+    }
+  }, [dispatch, navigate, userInfo]);
 
   return (
-    <MainScreen title="Welcome back Utsav...">
+    <MainScreen title={`Welcome back ${userInfo.name.split(" ")[0]}...`}>
       <Link to="/createnote">
         <Button className="mainscreenButton" size="lg">
           New note
@@ -31,9 +38,18 @@ const MyNotes = () => {
       </Link>
 
       <Accordion defaultActiveKey="0">
-        {notes.map((note) => (
+        {loading && <Loading />}
+        {error && (
+          <p className="noNotes" style={{ color: "orangered" }}>
+            {error}
+          </p>
+        )}
+        {notes?.data?.length === 0 && (
+          <p className="noNotes">You do not have any notes. Please add some.</p>
+        )}
+        {notes?.data?.map((note, index) => (
           <Accordion.Item
-            eventKey={`${notes.indexOf(note)}`}
+            eventKey={index}
             key={note._id}
             className="accordionItem"
           >
@@ -70,7 +86,7 @@ const MyNotes = () => {
                   <blockquote className="blockquote mb-0">
                     <p>{note.content}</p>
                     <footer className="blockquote-footer">
-                      Created on -Date
+                      Created at {note.createdAt.substring(0, 10)}
                     </footer>
                   </blockquote>
                 </Card.Body>

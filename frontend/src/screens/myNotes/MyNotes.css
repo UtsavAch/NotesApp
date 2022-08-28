@@ -70,3 +70,12 @@
   background-color: #e05040;
   transform: translateY(0.7px);
 }
+
+.noNotes {
+  margin: 50px auto;
+  font-weight: bold;
+  color: #555;
+  font-size: 20px;
+  margin-right: 50%;
+  transform: translateX(50%);
+}
