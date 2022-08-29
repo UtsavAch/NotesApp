@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import LandingPage from "./screens/LandingPage/LandingPage";
@@ -10,9 +11,10 @@ import SingleNote from "./screens/SingleNote/SingleNote";
 import "./App.css";
 
 const App = () => {
+  const [search, setSearch] = useState("");
   return (
     <>
-      <Header />
+      <Header setSearch={setSearch} />
       <main>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -20,7 +22,7 @@ const App = () => {
           <Route path="/register" element={<RegisterScreen />} />
           <Route path="/createnote" element={<CreateNote />} />
           <Route path="/note/:id" element={<SingleNote />} />
-          <Route path="/mynotes" element={<MyNotes />} />
+          <Route path="/mynotes" element={<MyNotes search={search} />} />
         </Routes>
       </main>
       <Footer />

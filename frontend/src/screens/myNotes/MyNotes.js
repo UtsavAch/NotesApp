@@ -8,7 +8,7 @@ import Loading from "../../components/Header/Loading";
 import "./MyNotes.css";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 
-const MyNotes = () => {
+const MyNotes = ({ search }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -68,50 +68,55 @@ const MyNotes = () => {
         {notes?.length === 0 && (
           <p className="noNotes">You do not have any notes. Please add some.</p>
         )}
-        {notes?.reverse().map((note, index) => (
-          <Accordion.Item
-            eventKey={index}
-            key={note._id}
-            className="accordionItem"
-          >
-            <Card className="noteCard">
-              <Accordion.Header className="accordionHeader">
-                <Card.Header className="noteHeader">
-                  <span className="noteTitle">{note.title}</span>
-                  <div className="noteButtonContainer">
-                    <Link
-                      to={`/note/${note._id}`}
-                      className="noteButton noteEditButton"
-                    >
-                      Edit
-                    </Link>
-                    <ConfirmModal
-                      id={note._id}
-                      buttonName="Delete"
-                      title="Do you want to confirm this operation?"
-                    />
-                  </div>
-                </Card.Header>
-              </Accordion.Header>
+        {notes
+          ?.reverse()
+          .filter((filteredNote) =>
+            filteredNote.title.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((note, index) => (
+            <Accordion.Item
+              eventKey={index}
+              key={note._id}
+              className="accordionItem"
+            >
+              <Card className="noteCard">
+                <Accordion.Header className="accordionHeader">
+                  <Card.Header className="noteHeader">
+                    <span className="noteTitle">{note.title}</span>
+                    <div className="noteButtonContainer">
+                      <Link
+                        to={`/note/${note._id}`}
+                        className="noteButton noteEditButton"
+                      >
+                        Edit
+                      </Link>
+                      <ConfirmModal
+                        id={note._id}
+                        buttonName="Delete"
+                        title="Do you want to confirm this operation?"
+                      />
+                    </div>
+                  </Card.Header>
+                </Accordion.Header>
 
-              <Accordion.Body>
-                <Card.Body className="noteBody">
-                  <h4>
-                    <Badge bg="light" text="dark">
-                      Category - {note.category}
-                    </Badge>
-                  </h4>
-                  <blockquote className="blockquote mb-0">
-                    <p>{note.content}</p>
-                    <footer className="blockquote-footer">
-                      Created at {note.createdAt.substring(0, 10)}
-                    </footer>
-                  </blockquote>
-                </Card.Body>
-              </Accordion.Body>
-            </Card>
-          </Accordion.Item>
-        ))}
+                <Accordion.Body>
+                  <Card.Body className="noteBody">
+                    <h4>
+                      <Badge bg="light" text="dark">
+                        Category - {note.category}
+                      </Badge>
+                    </h4>
+                    <blockquote className="blockquote mb-0">
+                      <p>{note.content}</p>
+                      <footer className="blockquote-footer">
+                        Created at {note.createdAt.substring(0, 10)}
+                      </footer>
+                    </blockquote>
+                  </Card.Body>
+                </Accordion.Body>
+              </Card>
+            </Accordion.Item>
+          ))}
       </Accordion>
     </MainScreen>
   );
