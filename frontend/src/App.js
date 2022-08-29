@@ -6,6 +6,7 @@ import MyNotes from "./screens/myNotes/MyNotes";
 import LoginScreen from "./screens/LoginScreen/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen/RegisterScreen";
 import CreateNote from "./screens/CreateNote/CreateNote";
+import SingleNote from "./screens/SingleNote/SingleNote";
 import "./App.css";
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<RegisterScreen />} />
           <Route path="/createnote" element={<CreateNote />} />
+          <Route path="/note/:id" element={<SingleNote />} />
           <Route path="/mynotes" element={<MyNotes />} />
         </Routes>
       </main>

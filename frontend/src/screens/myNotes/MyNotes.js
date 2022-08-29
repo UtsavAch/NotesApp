@@ -20,6 +20,9 @@ const MyNotes = () => {
   const noteCreate = useSelector((state) => state.noteCreate);
   const { success: successCreate } = noteCreate;
 
+  const noteUpdate = useSelector((state) => state.noteUpdate);
+  const { success: successUpdate } = noteUpdate;
+
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
     }
@@ -30,7 +33,7 @@ const MyNotes = () => {
     if (!userInfo) {
       navigate("/");
     }
-  }, [dispatch, navigate, userInfo, successCreate]);
+  }, [dispatch, navigate, userInfo, successCreate, successUpdate]);
 
   return (
     <MainScreen title={`Welcome back ${userInfo.name.split(" ")[0]}...`}>
