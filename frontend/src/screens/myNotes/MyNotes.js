@@ -17,6 +17,9 @@ const MyNotes = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const noteCreate = useSelector((state) => state.noteCreate);
+  const { success: successCreate } = noteCreate;
+
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
     }
@@ -27,7 +30,7 @@ const MyNotes = () => {
     if (!userInfo) {
       navigate("/");
     }
-  }, [dispatch, navigate, userInfo]);
+  }, [dispatch, navigate, userInfo, successCreate]);
 
   return (
     <MainScreen title={`Welcome back ${userInfo.name.split(" ")[0]}...`}>
@@ -44,10 +47,10 @@ const MyNotes = () => {
             {error}
           </p>
         )}
-        {notes?.data?.length === 0 && (
+        {notes?.length === 0 && (
           <p className="noNotes">You do not have any notes. Please add some.</p>
         )}
-        {notes?.data?.map((note, index) => (
+        {notes?.reverse().map((note, index) => (
           <Accordion.Item
             eventKey={index}
             key={note._id}
