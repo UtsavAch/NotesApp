@@ -6,6 +6,7 @@ import MainScreen from "../../components/MainScreen/MainScreen";
 import { listNotes } from "../../actions/noteActions";
 import Loading from "../../components/Header/Loading";
 import "./MyNotes.css";
+import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
 
 const MyNotes = () => {
   const navigate = useNavigate();
@@ -23,17 +24,26 @@ const MyNotes = () => {
   const noteUpdate = useSelector((state) => state.noteUpdate);
   const { success: successUpdate } = noteUpdate;
 
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure?")) {
-    }
-  };
+  const noteDelete = useSelector((state) => state.noteDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = noteDelete;
 
   useEffect(() => {
     dispatch(listNotes());
     if (!userInfo) {
       navigate("/");
     }
-  }, [dispatch, navigate, userInfo, successCreate, successUpdate]);
+  }, [
+    dispatch,
+    navigate,
+    userInfo,
+    successCreate,
+    successUpdate,
+    successDelete,
+  ]);
 
   return (
     <MainScreen title={`Welcome back ${userInfo.name.split(" ")[0]}...`}>
@@ -44,7 +54,12 @@ const MyNotes = () => {
       </Link>
 
       <Accordion defaultActiveKey="0">
-        {loading && <Loading />}
+        {(loading || loadingDelete) && <Loading />}
+        {errorDelete && (
+          <p className="noNotes" style={{ color: "orangered" }}>
+            {errorDelete}
+          </p>
+        )}
         {error && (
           <p className="noNotes" style={{ color: "orangered" }}>
             {error}
@@ -70,14 +85,11 @@ const MyNotes = () => {
                     >
                       Edit
                     </Link>
-                    <div
-                      className="noteButton noteDeleteButton"
-                      onClick={() => {
-                        deleteHandler(note._id);
-                      }}
-                    >
-                      Delete
-                    </div>
+                    <ConfirmModal
+                      id={note._id}
+                      buttonName="Delete"
+                      title="Do you want to confirm this operation?"
+                    />
                   </div>
                 </Card.Header>
               </Accordion.Header>
