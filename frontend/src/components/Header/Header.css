@@ -7,6 +7,14 @@
   text-decoration: none;
 }
 
+.logoutHeader {
+  position: absolute;
+  font-size: 32px;
+  font-weight: bold;
+  margin-left: 20px;
+  color: #e5fff6;
+}
+
 .navbarForm {
   width: 400px;
   height: 45px;

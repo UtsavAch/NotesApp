@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { Offcanvas } from "react-bootstrap";
 import { logout } from "../../actions/userActions";
 import "./ProfileCanvas.css";
 
-function ProfileCanvas(props) {
+function ProfileCanvas() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -13,6 +13,9 @@ function ProfileCanvas(props) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -23,20 +26,41 @@ function ProfileCanvas(props) {
   return (
     <>
       <span onClick={handleShow} className="me-2 offcanvasTitle">
-        {props.title} &rarr;
+        <img
+          src={`${userInfo?.pic}`}
+          alt="Girl in a jacket"
+          width="30"
+          height="30"
+          style={{
+            borderRadius: "50%",
+            cursor: "pointer",
+          }}
+        ></img>
       </span>
       <Offcanvas
         show={show}
         onHide={handleClose}
         placement="end"
-        style={{ backgroundColor: "#e5fff6" }}
+        style={{ backgroundColor: "#e5fff6", borderRadius: "8px 0 0 8px" }}
       >
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Notes</Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body>
-          <h1>Utsav Acharya</h1>
-          <p>I am Utsav Acharya.</p>
+        <Offcanvas.Body style={{ textAlign: "center" }}>
+          <img
+            src={`${userInfo?.pic}`}
+            alt="Girl in a jacket"
+            width="250"
+            height="250"
+            style={{
+              borderRadius: "50%",
+            }}
+          ></img>
+          <h1>{userInfo?.name}</h1>
+          <p>Email: {userInfo?.email}</p>
+          <Link to="/profile" onClick={handleClose}>
+            Edit profile
+          </Link>
           <div
             onClick={logoutHandler}
             style={{ fontWeight: "bold", cursor: "pointer" }}
