@@ -1,16 +1,8 @@
 const asyncHandler = require("express-async-handler");
+const multer = require("multer");
+const sharp = require("sharp");
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
-
-const getAllUsers = asyncHandler(async (req, res) => {
-  const users = await User.find();
-  if (users) {
-    res.send(users);
-  } else {
-    res.status(404);
-    throw new Error("No users found!");
-  }
-});
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, isAdmin, pic } = req.body;
@@ -86,4 +78,72 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getAllUsers, registerUser, authUser, updateUserProfile };
+/////////////////////////////////////////////
+const upload = multer({
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error("Please upload an image"));
+    }
+    cb(undefined, true);
+  },
+});
+
+const uploadMiddleware = upload.single("avatar");
+
+const uploadAvatar = asyncHandler(
+  async (req, res) => {
+    const buffer = await sharp(req.file.buffer)
+      .resize({ width: 250, height: 250 })
+      .png()
+      .toBuffer();
+    req.user.avatar = buffer;
+    await req.user.save();
+    res.send();
+  },
+  (error, req, res, next) => {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+);
+
+const deleteAvatar = asyncHandler(
+  async (req, res) => {
+    req.user.avatar = undefined;
+    await req.user.save();
+    res.send();
+  },
+  (error, req, res, next) => {
+    res.status(400).send({
+      error: error.message,
+    });
+  }
+);
+
+const getAvatar = asyncHandler(async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (!user || !user.avatar) {
+      throw new Error();
+    }
+    res.set("Content-Type", "image/png");
+    res.send(user.avatar);
+  } catch (e) {
+    res.status(404).send();
+  }
+});
+//////////////////////////////////////
+
+module.exports = {
+  registerUser,
+  authUser,
+  updateUserProfile,
+  uploadAvatar,
+  deleteAvatar,
+  getAvatar,
+  uploadMiddleware,
+};
