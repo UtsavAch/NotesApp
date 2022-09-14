@@ -18,6 +18,7 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [avatar, setAvatar] = useState("");
   const [imgFile, setImgFile] = useState(null);
+  const [imgError, setImgError] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const ProfileScreen = () => {
   const submitImgHandler = (e) => {
     e.preventDefault();
     const bodyFormData = new FormData();
-    bodyFormData.append("avatar", imgFile, imgFile.name);
+    bodyFormData.append("avatar", imgFile, "avatar.jpg");
     console.log(imgFile);
     const config = {
       headers: {
@@ -59,7 +60,12 @@ const ProfileScreen = () => {
 
     axios
       .post("/api/users/avatar", bodyFormData, config)
-      .then((res) => console.log(res));
+      .then((res) => {
+        res && window.location.reload(false);
+      })
+      .catch((error) => {
+        setImgError(true);
+      });
   };
 
   //////Get Avatar
@@ -182,7 +188,7 @@ const ProfileScreen = () => {
               }}
             >
               <img
-                src={avatar}
+                src={avatar ? avatar : pic}
                 alt={name}
                 className="profilePic"
                 style={{ height: "100%", width: "100%" }}
@@ -200,9 +206,20 @@ const ProfileScreen = () => {
                   />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" className="formButton">
-                  Change
-                </Button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className="formButton"
+                  >
+                    Change
+                  </Button>
+                  {imgError && (
+                    <p style={{ color: "orangered" }}>
+                      "File should be an image and not too large."
+                    </p>
+                  )}
+                </div>
               </Form>
             </Col>
           </div>

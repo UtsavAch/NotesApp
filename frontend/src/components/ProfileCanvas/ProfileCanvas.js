@@ -35,17 +35,20 @@ function ProfileCanvas() {
       responseType: "arraybuffer",
     };
 
-    axios.get("/api/users/avatar", config).then((response) => {
-      const resData = Buffer.from(response.data, "binary").toString("base64");
-      setAvatar(`data:image/png;base64,${resData}`);
-    });
+    axios
+      .get("/api/users/avatar", config)
+      .then((response) => {
+        const resData = Buffer.from(response.data, "binary").toString("base64");
+        setAvatar(`data:image/png;base64,${resData}`);
+      })
+      .catch((error) => {});
   }, [userInfo]);
 
   return (
     <>
       <span onClick={handleShow} className="me-2 offcanvasTitle">
         <img
-          src={avatar}
+          src={avatar ? avatar : userInfo.pic}
           alt="Profile"
           width="30"
           height="30"
@@ -66,7 +69,7 @@ function ProfileCanvas() {
         </Offcanvas.Header>
         <Offcanvas.Body style={{ textAlign: "center" }}>
           <img
-            src={avatar}
+            src={avatar ? avatar : userInfo.pic}
             alt="Profile Pic"
             width="250"
             height="250"

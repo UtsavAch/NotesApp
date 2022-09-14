@@ -44,7 +44,6 @@ const authUser = asyncHandler(async (req, res) => {
       isAdmin: user.isAdmin,
       pic: user.pic,
       token: generateToken(user._id),
-      avatar: user.avatar,
     });
   } else {
     res.status(400);

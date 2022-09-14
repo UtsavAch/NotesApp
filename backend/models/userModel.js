@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema(
     },
 
     isAdmin: {
-      //Just in case we need
       type: Boolean,
       required: true,
       default: false,
@@ -30,7 +29,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       default:
-        "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTF8fHxlbnwwfHx8fA%3D%3D&w=1000&q=80",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png",
     },
 
     avatar: {
