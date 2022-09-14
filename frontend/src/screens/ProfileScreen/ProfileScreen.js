@@ -6,6 +6,9 @@ import { updateProfile } from "../../actions/userActions";
 import ErrorMessage from "../../components/Header/ErrorMessage";
 import Loading from "../../components/Header/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
+import axios from "axios";
+import FormData from "form-data";
+global.Buffer = global.Buffer || require("buffer").Buffer;
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -13,7 +16,8 @@ const ProfileScreen = () => {
   const [pic, setPic] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  //   const [picMessage, setPicMessage] = useState();
+  const [avatar, setAvatar] = useState("");
+  const [imgFile, setImgFile] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,9 +42,40 @@ const ProfileScreen = () => {
     e.preventDefault();
     if (password === confirmPassword) {
       dispatch(updateProfile({ name, email, password, pic }));
-      console.log(password);
     }
   };
+
+  const submitImgHandler = (e) => {
+    e.preventDefault();
+    const bodyFormData = new FormData();
+    bodyFormData.append("avatar", imgFile, imgFile.name);
+    console.log(imgFile);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    axios
+      .post("/api/users/avatar", bodyFormData, config)
+      .then((res) => console.log(res));
+  };
+
+  //////Get Avatar
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      responseType: "arraybuffer",
+    };
+
+    axios.get("/api/users/avatar", config).then((response) => {
+      const resData = Buffer.from(response.data, "binary").toString("base64");
+      setAvatar(`data:image/png;base64,${resData}`);
+    });
+  }, [userInfo]);
 
   return (
     <MainScreen title="EDIT PROFILE" type="form">
@@ -51,9 +86,6 @@ const ProfileScreen = () => {
             <ErrorMessage variant="success">Updated successfully</ErrorMessage>
           )}
           {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-          {/* {picMessage && (
-              <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
-            )} */}
           <div
             className="formContainer"
             style={{
@@ -119,26 +151,6 @@ const ProfileScreen = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="pic">
-                  <Form.Label>Change profile picture</Form.Label>
-                  {/* <Form.Control
-                    className="formInput"
-                    type="password"
-                    value={confirmPassword}
-                    placeholder="Confirm password"
-                    onChange={(e) => {
-                      setConfirmPassword(e.target.value);
-                    }}
-                  /> */}
-                  <Form.Control
-                    type="file"
-                    className="formInput"
-                    onChange={(e) => {
-                      setPic(e.target.value);
-                    }}
-                  />
-                </Form.Group>
-
                 <div className="formSubmitArea">
                   <Button
                     variant="primary"
@@ -148,7 +160,13 @@ const ProfileScreen = () => {
                     Update
                   </Button>
 
-                  <Button variant="danger" className="formButton">
+                  <Button
+                    variant="danger"
+                    className="formButton"
+                    onClick={() => {
+                      navigate("/mynotes");
+                    }}
+                  >
                     Cancel
                   </Button>
                 </div>
@@ -158,16 +176,34 @@ const ProfileScreen = () => {
             <Col
               style={{
                 display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
               <img
-                src={`${userInfo.pic}`}
+                src={avatar}
                 alt={name}
                 className="profilePic"
                 style={{ height: "100%", width: "100%" }}
               />
+
+              <Form onSubmit={submitImgHandler} method="POST">
+                <Form.Group className="mb-3" controlId="pic">
+                  <Form.Label>Change profile picture</Form.Label>
+                  <Form.Control
+                    type="file"
+                    className="formInput"
+                    onChange={(e) => {
+                      setImgFile(e.target.files[0]);
+                    }}
+                  />
+                </Form.Group>
+
+                <Button variant="primary" type="submit" className="formButton">
+                  Change
+                </Button>
+              </Form>
             </Col>
           </div>
         </Row>

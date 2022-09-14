@@ -13,6 +13,7 @@ import "./App.css";
 
 const App = () => {
   const [search, setSearch] = useState("");
+
   return (
     <>
       <Header setSearch={setSearch} />

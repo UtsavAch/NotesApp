@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Offcanvas } from "react-bootstrap";
 import { logout } from "../../actions/userActions";
+import axios from "axios";
 import "./ProfileCanvas.css";
+global.Buffer = global.Buffer || require("buffer").Buffer;
 
 function ProfileCanvas() {
+  const [avatar, setAvatar] = useState();
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -23,12 +27,26 @@ function ProfileCanvas() {
     navigate("/");
   };
 
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+      responseType: "arraybuffer",
+    };
+
+    axios.get("/api/users/avatar", config).then((response) => {
+      const resData = Buffer.from(response.data, "binary").toString("base64");
+      setAvatar(`data:image/png;base64,${resData}`);
+    });
+  }, [userInfo]);
+
   return (
     <>
       <span onClick={handleShow} className="me-2 offcanvasTitle">
         <img
-          src={`${userInfo?.pic}`}
-          alt="Girl in a jacket"
+          src={avatar}
+          alt="Profile"
           width="30"
           height="30"
           style={{
@@ -48,8 +66,8 @@ function ProfileCanvas() {
         </Offcanvas.Header>
         <Offcanvas.Body style={{ textAlign: "center" }}>
           <img
-            src={`${userInfo?.pic}`}
-            alt="Girl in a jacket"
+            src={avatar}
+            alt="Profile Pic"
             width="250"
             height="250"
             style={{

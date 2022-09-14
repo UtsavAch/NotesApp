@@ -1,7 +1,6 @@
 import { Container, Form, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import ProfileCanvas from "../ProfileCanvas/ProfileCanvas";
 import "./Header.css";
 
