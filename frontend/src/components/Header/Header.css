@@ -43,3 +43,31 @@
 .navbarLink:hover {
   color: #fff;
 }
+
+@media screen and (max-width: 991px) {
+  .navbarCollapse {
+    display: flex;
+    flex-direction: column;
+    background-color: #555;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 12px;
+    transition: all step-end;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .navbarForm {
+    width: 250px;
+  }
+
+  .navbarCollapse {
+    padding: 2%;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .navbarForm {
+    width: 200px;
+  }
+}
