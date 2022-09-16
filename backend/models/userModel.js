@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       default:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Circle-icons-profile.svg/2048px-Circle-icons-profile.svg.png",
+        "https://icon-library.com/images/profile-icon-images/profile-icon-images-24.jpg",
     },
 
     avatar: {

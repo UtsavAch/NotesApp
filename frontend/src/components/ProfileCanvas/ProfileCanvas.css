@@ -1,7 +1,46 @@
-.offcanvasTitle {
-  color: #eee;
+.canvasBtnImage {
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.offcanvasTitle:hover {
-  color: #fff;
+.canvasBtnImage:hover {
+  transform: scale(1.05);
+}
+
+.canvasBackground {
+  background-color: #e5fff6;
+  border-radius: 8px 0 0 8px;
+}
+
+.canvasTitle {
+  font-weight: bold;
+  font-size: 28px;
+  color: #158cba;
+}
+
+.canvasBody {
+  text-align: center;
+}
+
+.canvasImage {
+  border-radius: 50%;
+}
+
+.canvasButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.logout {
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout:hover {
+  transform: scale(1.05);
 }

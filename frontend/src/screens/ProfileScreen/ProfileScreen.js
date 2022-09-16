@@ -8,6 +8,7 @@ import Loading from "../../components/Header/Loading";
 import MainScreen from "../../components/MainScreen/MainScreen";
 import axios from "axios";
 import FormData from "form-data";
+import "./ProfileScreen.css";
 global.Buffer = global.Buffer || require("buffer").Buffer;
 
 const ProfileScreen = () => {
@@ -19,6 +20,7 @@ const ProfileScreen = () => {
   const [avatar, setAvatar] = useState("");
   const [imgFile, setImgFile] = useState(null);
   const [imgError, setImgError] = useState(false);
+  const [passwordError, setPasswordError] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,14 +45,18 @@ const ProfileScreen = () => {
     e.preventDefault();
     if (password === confirmPassword) {
       dispatch(updateProfile({ name, email, password, pic }));
+      setPasswordError(null);
+    }
+    if (password !== confirmPassword) {
+      setPasswordError("Incorrect password");
     }
   };
 
   const submitImgHandler = (e) => {
     e.preventDefault();
     const bodyFormData = new FormData();
+    if (!imgFile) return;
     bodyFormData.append("avatar", imgFile, "avatar.jpg");
-    console.log(imgFile);
     const config = {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
@@ -77,10 +83,13 @@ const ProfileScreen = () => {
       responseType: "arraybuffer",
     };
 
-    axios.get("/api/users/avatar", config).then((response) => {
-      const resData = Buffer.from(response.data, "binary").toString("base64");
-      setAvatar(`data:image/png;base64,${resData}`);
-    });
+    axios
+      .get("/api/users/avatar", config)
+      .then((response) => {
+        const resData = Buffer.from(response.data, "binary").toString("base64");
+        setAvatar(`data:image/png;base64,${resData}`);
+      })
+      .catch((error) => {});
   }, [userInfo]);
 
   return (
@@ -88,19 +97,13 @@ const ProfileScreen = () => {
       <div style={{ width: "70%" }}>
         <Row className="profileContainer">
           {loading && <Loading />}
+          {passwordError && (
+            <ErrorMessage variant="danger">{passwordError}</ErrorMessage>
+          )}
           {success && (
             <ErrorMessage variant="success">Updated successfully</ErrorMessage>
           )}
-          {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-          <div
-            className="formContainer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "25px",
-            }}
-          >
+          <div className="formContainer profileFormContainer">
             <Col>
               <Form onSubmit={submitHandler}>
                 <Form.Group className="mb-3" controlId="name">
@@ -179,23 +182,22 @@ const ProfileScreen = () => {
               </Form>
             </Col>
 
-            <Col
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <Col className="imgChangeCol">
               <img
                 src={avatar ? avatar : pic}
                 alt={name}
-                className="profilePic"
-                style={{ height: "100%", width: "100%" }}
+                className="profileImg"
               />
 
-              <Form onSubmit={submitImgHandler} method="POST">
-                <Form.Group className="mb-3" controlId="pic">
+              <Form
+                onSubmit={submitImgHandler}
+                method="POST"
+                className="imgChangeForm"
+              >
+                <Form.Group
+                  className="mb-3 imgChangeFormControl"
+                  controlId="pic"
+                >
                   <Form.Label>Change profile picture</Form.Label>
                   <Form.Control
                     type="file"
@@ -206,7 +208,7 @@ const ProfileScreen = () => {
                   />
                 </Form.Group>
 
-                <div style={{ display: "flex", gap: "10px" }}>
+                <div className="imgColBtnDiv">
                   <Button
                     variant="primary"
                     type="submit"

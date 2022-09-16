@@ -46,47 +46,41 @@ function ProfileCanvas() {
 
   return (
     <>
-      <span onClick={handleShow} className="me-2 offcanvasTitle">
+      <span onClick={handleShow} className="me-2">
         <img
           src={avatar ? avatar : userInfo.pic}
           alt="Profile"
           width="30"
           height="30"
-          style={{
-            borderRadius: "50%",
-            cursor: "pointer",
-          }}
+          className="canvasBtnImage"
         ></img>
       </span>
       <Offcanvas
         show={show}
         onHide={handleClose}
         placement="end"
-        style={{ backgroundColor: "#e5fff6", borderRadius: "8px 0 0 8px" }}
+        className="canvasBackground"
       >
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Notes</Offcanvas.Title>
+          <Offcanvas.Title className="canvasTitle">Notes</Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body style={{ textAlign: "center" }}>
+        <Offcanvas.Body className="canvasBody">
           <img
             src={avatar ? avatar : userInfo.pic}
             alt="Profile Pic"
             width="250"
             height="250"
-            style={{
-              borderRadius: "50%",
-            }}
+            className="canvasImage"
           ></img>
           <h1>{userInfo?.name}</h1>
           <p>Email: {userInfo?.email}</p>
-          <Link to="/profile" onClick={handleClose}>
-            Edit profile
-          </Link>
-          <div
-            onClick={logoutHandler}
-            style={{ fontWeight: "bold", cursor: "pointer" }}
-          >
-            Logout
+          <div className="canvasButtons">
+            <Link to="/profile" onClick={handleClose}>
+              Edit profile
+            </Link>
+            <Link to="/" onClick={logoutHandler} className="logout">
+              Logout
+            </Link>
           </div>
         </Offcanvas.Body>
       </Offcanvas>

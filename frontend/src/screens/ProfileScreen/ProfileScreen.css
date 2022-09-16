@@ -1,0 +1,68 @@
+.profileFormContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.imgChangeCol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.profileImg {
+  height: 70%;
+  width: 70%;
+}
+
+.imgColBtnDiv {
+  display: flex;
+  gap: 10px;
+}
+
+.formButton {
+  height: 40px;
+}
+
+@media screen and (max-width: 1200px) {
+  .profileImg {
+    height: 85%;
+    width: 85%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .formContainer {
+    flex-direction: column-reverse;
+  }
+
+  .imgChangeCol {
+    border-bottom: 1px solid #888;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+
+  .imgChangeForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .imgChangeFormControl {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .profileImg {
+    height: 85%;
+    width: 85%;
+  }
+}
