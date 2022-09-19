@@ -7,6 +7,7 @@ import { listNotes } from "../../actions/noteActions";
 import Loading from "../../components/Header/Loading";
 import "./MyNotes.css";
 import ConfirmModal from "../../components/ConfirmModal/ConfirmModal";
+import { deleteNoteAction } from "../../actions/noteActions";
 
 const MyNotes = ({ search }) => {
   const navigate = useNavigate();
@@ -44,6 +45,10 @@ const MyNotes = ({ search }) => {
     successUpdate,
     successDelete,
   ]);
+
+  const deleteNoteHandler = (id) => {
+    dispatch(deleteNoteAction(id));
+  };
 
   return (
     <MainScreen title={`Welcome back ${userInfo.name.split(" ")[0]}...`}>
@@ -92,6 +97,7 @@ const MyNotes = ({ search }) => {
                       </Link>
                       <ConfirmModal
                         id={note._id}
+                        onDelete={deleteNoteHandler}
                         buttonName="Delete"
                         title="Do you want to confirm this operation?"
                       />

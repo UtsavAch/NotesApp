@@ -44,3 +44,24 @@
 .logout:hover {
   transform: scale(1.05);
 }
+
+.dangerZone {
+  border-top: 1px solid #444;
+  margin: 30px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.dangerZoneTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: orangered;
+}
+
+.dangerZoneLink {
+  font-size: 16px;
+  font-weight: bold;
+}

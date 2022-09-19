@@ -3,6 +3,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const User = require("../models/userModel");
 const generateToken = require("../utils/generateToken");
+const Note = require("../models/noteModel");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password, isAdmin, pic } = req.body;
@@ -78,6 +79,18 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteAccount = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  if (user) {
+    await Note.remove({ user: user });
+    await user.remove();
+    res.json({ message: "User Removed" });
+  } else {
+    res.status(500);
+    throw new Error("Delete unsuccessful!");
+  }
+});
+
 /////////////////////////////////////////////
 const upload = multer({
   limits: {
@@ -142,6 +155,7 @@ module.exports = {
   registerUser,
   authUser,
   updateUserProfile,
+  deleteAccount,
   uploadAvatar,
   deleteAvatar,
   getAvatar,

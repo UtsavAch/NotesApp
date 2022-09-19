@@ -18,8 +18,10 @@ function Header({ setSearch }) {
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll" className="navbarCollapse">
-            {/* <div> */}
+          <Navbar.Collapse
+            id="responsive-navbar-nav"
+            className="navbarCollapse"
+          >
             <Nav className="m-auto">
               <Form className="d-flex navbarForm">
                 <Form.Control
@@ -39,7 +41,6 @@ function Header({ setSearch }) {
               </Link>
               <ProfileCanvas />
             </Nav>
-            {/* </div> */}
           </Navbar.Collapse>
         </Container>
       </Navbar>

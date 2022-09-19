@@ -4,12 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { Offcanvas } from "react-bootstrap";
 import { logout } from "../../actions/userActions";
 import axios from "axios";
+import ConfirmModal from "../ConfirmModal/ConfirmModal";
 import "./ProfileCanvas.css";
 global.Buffer = global.Buffer || require("buffer").Buffer;
 
 function ProfileCanvas() {
   const [avatar, setAvatar] = useState();
-
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -43,6 +43,24 @@ function ProfileCanvas() {
       })
       .catch((error) => {});
   }, [userInfo]);
+
+  const onDeleteAccount = () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    axios
+      .delete("/api/users/profile", config)
+      .then((res) => {
+        dispatch(logout());
+        handleClose();
+        navigate("/");
+        res && window.location.reload(false);
+      })
+      .catch((error) => {});
+  };
 
   return (
     <>
@@ -81,6 +99,14 @@ function ProfileCanvas() {
             <Link to="/" onClick={logoutHandler} className="logout">
               Logout
             </Link>
+          </div>
+          <div className="dangerZone">
+            <p className="dangerZoneTitle">Danger Zone</p>
+            <ConfirmModal
+              onDelete={onDeleteAccount}
+              buttonName="Delete account"
+              title="Your notes account will be permanently deleted."
+            />
           </div>
         </Offcanvas.Body>
       </Offcanvas>
